@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/Srinivas Code/Styles/navbar.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+      integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm"
+      crossorigin="anonymous"
+    />
+  </head>
+  <style>
+    .container {
+      display: flex;
+      width: 100%;
+      justify-content: space-evenly;
+      padding-top: 20px;
+    }
+    .left {
+      width: 70%;
+      border: 1px solid teal;
+      box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+        rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+      border: none;
+    }
+    .right {
+      width: 25%;
+
+      box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+        rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+      border: none;
+    }
+    .left-header {
+      /* border: 1px solid grey; */
+      height: 50px;
+    }
+    .flex-box {
+      display: flex;
+      justify-content: space-evenly;
+      margin-top: 15px;
+    }
+    .img-div {
+      width: 20%;
+      height: 80%;
+      /* border: 1px solid blue; */
+    }
+    .img-div img {
+      width: 100%;
+      height: 100%;
+    }
+    .desc-div {
+      width: 75%;
+      height: 200px;
+      /* border: 1px solid blue; */
+    }
+    .desc-div img {
+      width: 82px;
+      height: 25px;
+      margin-left: 15px;
+    }
+    .price-detail {
+      padding: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      
+    }
+    .price-detail p{
+      line-height: 50px;
+    }
+    .price-detail span {
+      float: right;
+    }
+    .inc-dec-btn {
+      width: 40px;
+      height: 40px;
+      padding: 5px;
+      background-color: whitesmoke;
+      border-radius: 50%;
+      color: grey;
+      font-size: 28px;
+      cursor: pointer;
+      border: none;
+    }
+    .qty-span {
+      padding: 8px;
+      margin: 0px 10px 0px 10px;
+      font-size: 22px;
+    }
+    .rm_btn {
+      font-weight: bolder;
+      margin-left: 70px;
+      padding: 5px;
+      font-size: large;
+      border: none;
+      cursor: pointer;
+    }
+    .rm_btn:hover {
+      background-color: brown;
+    }
+    #checkout-button {
+      width: 240px;
+      height: 40px;
+      background-color: rgb(89, 89, 238);
+      color: white;
+      margin-left: 20%;
+      border-radius: 10px;
+      font-weight: bolder;
+    }
+    .right-header h3 {
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+  <body>
+    <header></header>
+    <div class="container">
+      <div class="left">
+        <div class="left-header"></div>
+      </div>
+      <div class="right">
+        <div class="right-header">
+          <h3>PRICE DETAILS</h3>
+          <div class="price-detail">
+            <p>Price <span id="price">1000</span></p>
+            <p>Delivery Charges <span id="dl">₹0</span><span>₹</span></p>
+            <p>Total Amount <span id="amount">1035</span><span>₹</span></p>
+
+           <a href="../sujata code/payment.html"> <button id="checkout-button">Checkout</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer></footer>
+  </body>
+</html>
+<script type="module">
+  import { navbar, footer } from "../Srinivas Code/Components/nav_foot.js";
+
+  let header = document.querySelector("header");
+  header.innerHTML = navbar();
+
+  let last = document.querySelector("footer");
+  last.innerHTML = footer();
+
+  let slider = document.querySelector(".slider");
+
+  let item_cart = document.getElementById("cart-item");
+  item_cart.innerText = "";
+  
+</script>
+<script type="module">
+  import {data} from "../Srinivas Code/JS/items_data.js"
+  let cart_ids_arr = JSON.parse(localStorage.getItem("itemsids")) || [];
+  let left = document.querySelector(".left");
+  let sum = 0;
+  let price = document.getElementById("price");
+  let amount = document.getElementById("amount");
+  let dl = document.getElementById("dl");
+  getLocalStorage(cart_ids_arr);
+
+  function getLocalStorage(arr) {
+    left.innerHTML = "";
+    price.innerText = "";
+    amount.innerText = "";
+    dl.innerText = "";
+    sum = 0;
+
+    arr.map((id) => {
+      let id_data = data.filter((item) => {
+        return id == item.id;
+      });
+      sum += id_data[0].price;
+      price.innerText = "₹" + sum;
+      let total=sum+135;
+      localStorage.setItem("total_amount",JSON.stringify(total))
+      amount.innerText = sum + 135;
+      dl.innerText = 135;
+      dispplay_id_data(id_data);
+    });
+  }
+
+  function dispplay_id_data(id_data) {
+    id_data.map((e) => {
+      let flex_box = document.createElement("div");
+      flex_box.className = "flex-box";
+      let imgdiv = document.createElement("div");
+      imgdiv.className = "img-div";
+      let descdiv = document.createElement("div");
+      descdiv.className = "desc-div";
+
+      imgdiv.innerHTML = `<img src=${e.img}>`;
+      descdiv.innerHTML = `<h3>${e.name}</h3>
+        <h3>₹${e.price}<img src=assured.png><h2>`;
+      let p = e.price;
+      // Quantity Inc Dec Buttons
+
+      //Dec button
+      let decbtn = document.createElement("button");
+      decbtn.className = "inc-dec-btn";
+      decbtn.textContent = "-";
+      decbtn.addEventListener("click", () => {
+        if (+qty.textContent == 1) {
+          return;
+        }
+        qty.textContent = +qty.textContent - 1;
+        sum -= p;
+        price.innerText = "₹" + sum;
+        amount.innerText = sum + 135;
+        let total=sum+135;
+        localStorage.setItem("total_amount",JSON.stringify(total))
+      });
+
+      let qty = document.createElement("span");
+      qty.textContent = "1";
+      qty.className = "qty-span";
+
+      //Inc Button
+      let incbtn = document.createElement("button");
+      incbtn.textContent = "+";
+      incbtn.className = "inc-dec-btn";
+
+      incbtn.addEventListener("click", () => {
+        if (+qty.textContent == 5) {
+          alert("Maximum 5 Quantity Per Item Allowed");
+          return;
+        }
+        qty.textContent = +qty.textContent + 1;
+        sum += p;
+        price.innerText = "₹" + sum;
+        amount.innerText = sum + 135;
+        let total=sum+135;
+        localStorage.setItem("total_amount",JSON.stringify(total))
+      });
+      // remove Button
+      let rm_btn = document.createElement("button");
+      rm_btn.className = "rm_btn";
+      rm_btn.textContent = "REMOVE";
+
+      rm_btn.addEventListener("click", () => {
+        console.log(e.id);
+        for (let i = 0; i < cart_ids_arr.length; i++) {
+          if (cart_ids_arr[i] == e.id) {
+            cart_ids_arr.splice(i, 1);
+          }
+        }
+        console.log(cart_ids_arr);
+        localStorage.setItem("itemsids", JSON.stringify(cart_ids_arr));
+        cart_ids_arr = JSON.parse(localStorage.getItem("itemsids")) || [];
+        getLocalStorage(cart_ids_arr);
+
+      });
+
+      descdiv.append(decbtn, qty, incbtn, rm_btn);
+      flex_box.append(imgdiv, descdiv);
+      left.append(flex_box);
+    });
+  }
+</script>
